@@ -1,0 +1,11 @@
+python==3.6
+
+import argparse
+import random
+import time
+from pythonosc import osc_message_builder
+from pythonosc import udp_client
+
+import numpy as np
+import cv2
+import socket

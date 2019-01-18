@@ -1,0 +1,5 @@
+numpy
+socket
+cv2
+opencv-python
+python-osc
