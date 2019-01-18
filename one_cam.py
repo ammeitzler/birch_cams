@@ -15,7 +15,7 @@ face_cascade = cv2.CascadeClassifier('haar_libs/haarcascade_frontalface_default.
 eye_cascade = cv2.CascadeClassifier('haar_libs/haarcascade_eye.xml')
 
 
-if __name__ == "__main__":
+def main():
     #cam parameter
     cam_num = 0
     parser = argparse.ArgumentParser()
@@ -25,7 +25,8 @@ if __name__ == "__main__":
     if args.cam:
         cam_num = args.cam
 
-    cap = cv2.VideoCapture(cam_num)
+    c = int(cam_num)
+    cap = cv2.VideoCapture(c)
 
     while 1:
         #setup osc
@@ -59,7 +60,7 @@ if __name__ == "__main__":
         k = cv2.waitKey(30) & 0xff
         if k == 27:
             break
-
+main()
 
 cap.release()
 cv2.destroyAllWindows()
