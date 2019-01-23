@@ -42,7 +42,6 @@ def main():
 
         num_faces = len(faces)
         client.send_message("/people", num_faces)
-        # print(len(faces))
 
         eyes = eye_cascade.detectMultiScale(gray, 1.3, 5)
         num_eyes = len(eyes)
