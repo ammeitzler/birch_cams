@@ -33,7 +33,7 @@ def main():
         #setup osc
         ip = "127.0.0.1"
         port = 7003
-        client = udp_client.SimpleUDPClient(args.ip, args.port)
+        client = udp_client.SimpleUDPClient(ip, port)
 
         ret, img00 = cap.read()
         img = cv2.resize(img00,(560,340))
@@ -44,17 +44,25 @@ def main():
         client.send_message("/people", num_faces)
         # print(len(faces))
 
-        for (x,y,w,h) in faces:
-            cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
+        eyes = eye_cascade.detectMultiScale(gray, 1.3, 5)
+        num_eyes = len(eyes)
+        print(num_eyes)
+        for (x,y,w,h) in eyes:
             roi_gray = gray[y:y+h, x:x+w]
             roi_color = img[y:y+h, x:x+w]
+            cv2.rectangle(roi_color,(x,y),(x+w,y+h),(0,255,0),2)
+
+        # for (x,y,w,h) in faces:
+        #     cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
+        #     roi_gray = gray[y:y+h, x:x+w]
+        #     roi_color = img[y:y+h, x:x+w]
             
-            eyes = eye_cascade.detectMultiScale(roi_gray)
-            for (ex,ey,ew,eh) in eyes:
-                cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
+        #     eyes = eye_cascade.detectMultiScale(roi_gray)
+        #     for (ex,ey,ew,eh) in eyes:
+        #         cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
 
 
-        # cv2.imshow('img',img)
+        cv2.imshow('img',img)
         k = cv2.waitKey(30) & 0xff
         if k == 27:
             break
