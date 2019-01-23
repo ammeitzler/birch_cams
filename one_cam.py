@@ -13,6 +13,7 @@ import socket
 
 face_cascade = cv2.CascadeClassifier('haar_libs/haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier('haar_libs/haarcascade_eye.xml')
+profile_cascade = cv2.CascadeClassifier('haar_libs/haarcascade_profileface.xml')
 
 
 def main():
@@ -38,28 +39,31 @@ def main():
         ret, img00 = cap.read()
         img = cv2.resize(img00,(560,340))
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        faces = face_cascade.detectMultiScale(gray, 1.3, 5)
 
-        num_faces = len(faces)
-        client.send_message("/people", num_faces)
+        prof_face = profile_cascade.detectMultiScale(gray, 1.3, 5)
+        numprof_face = len(prof_face)
+        for (x,y,w,h) in prof_face:
+            cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
+            roi_gray = gray[y:y+h, x:x+w]
+            roi_color = img[y:y+h, x:x+w]
 
         eyes = eye_cascade.detectMultiScale(gray, 1.3, 5)
         num_eyes = len(eyes)
-        print(num_eyes)
         for (x,y,w,h) in eyes:
+            cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,255),2)
             roi_gray = gray[y:y+h, x:x+w]
             roi_color = img[y:y+h, x:x+w]
-            cv2.rectangle(roi_color,(x,y),(x+w,y+h),(0,255,0),2)
 
-        # for (x,y,w,h) in faces:
-        #     cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
-        #     roi_gray = gray[y:y+h, x:x+w]
-        #     roi_color = img[y:y+h, x:x+w]
-            
-        #     eyes = eye_cascade.detectMultiScale(roi_gray)
-        #     for (ex,ey,ew,eh) in eyes:
-        #         cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
+        faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+        num_faces = len(faces)
+        for (x,y,w,h) in faces:
+            cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
+            roi_gray = gray[y:y+h, x:x+w]
+            roi_color = img[y:y+h, x:x+w]
 
+        total_num = num_faces + numprof_face + num_eyes
+        print(total_num)
+        client.send_message("/people", total_num)
 
         cv2.imshow('img',img)
         k = cv2.waitKey(30) & 0xff
