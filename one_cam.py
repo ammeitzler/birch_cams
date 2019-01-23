@@ -27,15 +27,13 @@ def main():
 
     c = int(cam_num)
     cap = cv2.VideoCapture(c)
+    print("detecting faces")
 
     while 1:
         #setup osc
-        parser = argparse.ArgumentParser()
-        parser.add_argument("--ip", default="192.168.0.5", help="The ip of the OSC server")
-        parser.add_argument("--port", type=int, default=7003, help="The port the OSC server is listening on")
-        args = parser.parse_args()
+        ip = "127.0.0.1"
+        port = 7003
         client = udp_client.SimpleUDPClient(args.ip, args.port)
-
 
         ret, img00 = cap.read()
         img = cv2.resize(img00,(560,340))

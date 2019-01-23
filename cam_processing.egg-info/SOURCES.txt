@@ -1,0 +1,7 @@
+setup.py
+cam_processing.egg-info/PKG-INFO
+cam_processing.egg-info/SOURCES.txt
+cam_processing.egg-info/dependency_links.txt
+cam_processing.egg-info/not-zip-safe
+cam_processing.egg-info/requires.txt
+cam_processing.egg-info/top_level.txt
