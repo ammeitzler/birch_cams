@@ -65,7 +65,7 @@ def main():
         print(total_num)
         client.send_message("/people", total_num)
 
-        cv2.imshow('img',img)
+        # cv2.imshow('img',img)
         k = cv2.waitKey(30) & 0xff
         if k == 27:
             break
